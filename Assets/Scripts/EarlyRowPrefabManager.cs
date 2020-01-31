@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class EarlyRowPrefabManager : BaseRowPrefabManager
+public class EarlyRowPrefabManager : BaseRowPrefabManager, IHaveSpawnCells
 {    
     private GameObject PrefabParentUIObject;    
-    private int _valueInTail = 0;    
+    private int _valueInCell = 0;    
 
-    public List<int> ListValuesInTails
+    public List<int> ListValuesInCells
     {
         get;
         private set;
@@ -18,46 +18,44 @@ public class EarlyRowPrefabManager : BaseRowPrefabManager
     void Start()
     {
         PrefabParentUIObject = gameObject;       
-        ListValuesInTails = new List<int>();
-        
+        ListValuesInCells = new List<int>();
+        SpawnCells();                
+    }
+
+    public void SpawnCells()
+    {
         int i = 0;
-        _maxValueInTail++;//@@@@@@@@@@@@22
+        _maxValueInCell++;//????????
 
         do
-        {            
+        {
             int a = 0;
 
             while (a == 0)
-            {                
-                _valueInTail = UnityEngine.Random.Range(1, _maxValueInTail);
-                a++;                
+            {
+                _valueInCell = UnityEngine.Random.Range(1, _maxValueInCell);
+                a++;
 
                 if (i != 0)
-                {                                       
-                    foreach (int value in ListValuesInTails)
+                {
+                    foreach (int value in ListValuesInCells)
                     {
-                        if (value == _valueInTail)
+                        if (value == _valueInCell)
                         {
-                            a = 0;                            
-                        }                        
+                            a = 0;
+                        }
                     }
-                }                 
+                }
             }
 
-            ListValuesInTails.Add(_valueInTail);
+            ListValuesInCells.Add(_valueInCell);
 
-            _tile = Main.InstantiateUIPrefab(PrefabTile, gameObject);
-            _tile.GetComponentInChildren<Text>().text = Convert.ToString(_valueInTail);
-            _tile.GetComponent<Button>().interactable = false;
-            
+            _cell = Main.InstantiateUIPrefab(_prefabCell, gameObject);
+            _cell.GetComponentInChildren<Text>().text = Convert.ToString(_valueInCell);
+            _cell.GetComponent<Button>().interactable = false;
+
             i++;
         }
-        while (i < _tileAmount);        
-    }
-
-    
-    void Update()
-    {
-        
+        while (i < _cellAmount);
     }
 }

@@ -13,32 +13,31 @@ using System.Xml;
 public class Main : MonoBehaviour
 {
     public GameObject PrefabRow;    
-    public GameObject PrefabTail;    
-    public GameObject PrefabValueTextAmountTiles;
-    public GameObject PrefabValueTextMaxValueInTail;
+    public GameObject PrefabCell;    
+    public GameObject TextValueTextAmountCells;
+    public GameObject TextValueTextMaxValueInCell;
     public GameObject EarlyRowPrefab;
     
-    public GameObject LanguageChangeButton;            //@@@@
-    public GameObject AmountTilesSlider;            //@@@@
-    public GameObject MaxValueInTailSlider;            //@@@@
-    [HideInInspector] public int TileAmount = 0;             //@@@@
-    [HideInInspector] public int MaxValueInTail = 0;             //@@@@
+    public GameObject LanguageChangeButton;            
+    public GameObject AmountCellsSlider;            
+    public GameObject MaxValueInCellSlider;            
+    [HideInInspector] public int CellAmount = 3;             
+    [HideInInspector] public int MaxValueInCell = 5;             
     
-    public List<string> names;
-    public GameObject[] words;
+    //localization
+    [HideInInspector]public List<string> Names;
+    [HideInInspector]public GameObject[] Words;
 
      void Awake()
     {        
         //PrefabRow = Resources.Load("Assets/Resources/Prefab_Row(attempt)") as GameObject;
-        //PrefabTail = Resources.Load("Assets/Resources/Prefab_Tail") as GameObject;
+        //PrefabTail = Resources.Load("Assets/Resources/Prefab_Cell") as GameObject;
     }
 
     void Start()
     {        
-        names = new List<string>();
-        //LocalizationManager();
-        //string str = Convert.ToString(TileAmount);
-        //PrefabValueTextAmountTiles.GetComponent<TextMeshProUGUI>().text = str;        
+        Names = new List<string>();
+        //LocalizationManager();                
     }
 
     /// <summary>
@@ -55,7 +54,7 @@ public class Main : MonoBehaviour
 
     public void LocalizationManager ()
     {
-        words = GameObject.FindGameObjectsWithTag("changeLanguage");
+        Words = GameObject.FindGameObjectsWithTag("changeLanguage");
         string language = PlayerPrefs.GetString("Language");
         XmlDocument xmlDock = new XmlDocument();
         xmlDock.Load("Assets/Resourсes/" + language + ".xml"); 
@@ -63,12 +62,12 @@ public class Main : MonoBehaviour
 
         foreach (XmlNode tag in list)
         {
-            names.Add(tag.InnerText);            
+            Names.Add(tag.InnerText);            
         }        
-        int length = words.Length;
+        int length = Words.Length;
         for(int i = 0; i < length; i++)
         {
-            words[i].GetComponent<Text>().text = names[i];
+            Words[i].GetComponent<Text>().text = Names[i];
         }
     }
     

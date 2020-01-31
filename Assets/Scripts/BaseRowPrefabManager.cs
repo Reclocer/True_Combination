@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Main))]
 public class BaseRowPrefabManager : MonoBehaviour
 {    
-    protected GameObject PrefabTile;
-    protected GameObject _main;
-    
+    protected GameObject _prefabCell;
+    protected Main _main; 
 
-    protected int _tileAmount = 0;
-    protected int _maxValueInTail = 0;    
-    protected GameObject _tile;   
+    protected int _cellAmount = 3;
+    protected int _maxValueInCell = 5;    
+    protected GameObject _cell;   
 
     private void Awake()
-    {        
-        _main = GameObject.FindGameObjectWithTag("main");
-        PrefabTile = _main.GetComponent<Main>().PrefabTail;
-        _tileAmount = _main.GetComponent<Main>().TileAmount;
-        _maxValueInTail = _main.GetComponent<Main>().MaxValueInTail;        
+    {
+        
     }
 
-    void Start()
-    {    
-
-
+    private void Start()
+    {
+        _main = GetComponent<Main>();
+        _prefabCell = _main.PrefabCell;
+        _cellAmount = _main.CellAmount;
+        _maxValueInCell = _main.MaxValueInCell;
     }
-
 }

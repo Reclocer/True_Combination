@@ -4,31 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class RowPrefabManager : BaseRowPrefabManager
+public class RowPrefabManager : BaseRowPrefabManager, IHaveSpawnCells
 {    
     private GameObject PrefabParentUIObject;    
-    public List<GameObject> _listTiles;   
+    public List<GameObject> _listCells;   
 
     void Start()
     {        
         PrefabParentUIObject = gameObject;
-        _listTiles = new List<GameObject>();        
+        _listCells = new List<GameObject>();        
 
-        SpawnTiles();
+        SpawnCells();
     }
 
     /// <summary>
     /// Create tiles without arguments
     /// </summary>
-    private void SpawnTiles()
+    public void SpawnCells()
     {
         int i = 0;
         do
         {
-            _tile = Main.InstantiateUIPrefab(PrefabTile, PrefabParentUIObject);
-            _listTiles.Add(_tile);
+            _cell = Main.InstantiateUIPrefab(_prefabCell, PrefabParentUIObject);
+            _listCells.Add(_cell);
             i++;
         }
-        while (i < _tileAmount);
+        while (i < _cellAmount);
     }
 }

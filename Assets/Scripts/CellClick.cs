@@ -1,21 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class TileClick : MonoBehaviour
+public class CellClick : MonoBehaviour
 {
-    private GameObject _main;
+    [SerializeField] private Main _main;
     private int _maxValue = 0;
     private string _sValue;
+    
+    void Start()
+    {
+        GameObject main = GameObject.FindGameObjectWithTag("main");
+        _main = main.GetComponent<Main>();
+        _maxValue = _main.MaxValueInCell;
+
+        GetComponent<Button>().onClick.AddListener(ClickTile);
+    }
 
     public void ClickTile()
     {
         _sValue = GetComponentInChildren<Text>().text;
         GetComponentInChildren<Text>().text = IncrementValue(_sValue);
     }
-    
+
     /// <summary>
     /// Прибавление значения в ячейке
     /// </summary>
@@ -24,9 +31,9 @@ public class TileClick : MonoBehaviour
     private string IncrementValue(string sMy)
     {
         int value = Convert.ToInt32(sMy);
-        int maxValue = _maxValue -1;
+        int maxValue = _maxValue - 1;
 
-        if (value <= maxValue )
+        if (value <= maxValue)
         {
             return sMy = Convert.ToString(value + 1);
         }
@@ -35,18 +42,7 @@ public class TileClick : MonoBehaviour
             return sMy = Convert.ToString(1);
         }
     }
-
-    private void Awake()
-    {
-        _main = GameObject.FindGameObjectWithTag("main");
-    }
-
-    void Start()
-    {        
-        _maxValue = _main.GetComponent<Main>().MaxValueInTail;
-
-        GetComponent<Button>().onClick.AddListener(ClickTile);
-    }
 }
 
-    
+
+

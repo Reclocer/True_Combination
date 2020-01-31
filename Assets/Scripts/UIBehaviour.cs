@@ -8,25 +8,56 @@ using UnityEngine.SceneManagement;
 using System.Xml;
 using System.Xml.Serialization;
 
+[RequireComponent(typeof(Main))]
 public class UIBehaviour : MonoBehaviour
 {
-    private GameObject _main;
+    private Main _main;
     private GameObject _languageChangeButton;
     private string _language;
-    private GameObject _amountTilesSlider;            
-    private GameObject _maxValueInTailSlider;
+    private GameObject _amountCellsSlider;            
+    private GameObject _maxValueInCellSlider;
 
+    private void Awake()
+    {
+        _main = GetComponent<Main>();
 
+        PlayerPrefsLoad();        
+    }
+
+    private void PlayerPrefsLoad()
+    {
+        // load last used language
+        //_languageChangeButton = _main.GetComponent<Main>().LanguageChangeButton;
+        //if (PlayerPrefs.HasKey("Language"))
+        //{
+        //    _languageChangeButton.GetComponentInChildren<Text>().text = _language = PlayerPrefs.GetString("Language");
+        //    _main.LocalizationManager();
+        //}
+
+        // Load last amountTiles in slider
+        _amountCellsSlider = _main.AmountCellsSlider;
+        if (PlayerPrefs.HasKey("CellAmount"))
+        {
+            _amountCellsSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("CellAmount");
+        }
+
+        // Load last maxValueInTail in slider
+        _maxValueInCellSlider = _main.MaxValueInCellSlider;
+        if (PlayerPrefs.HasKey("MaxValueInCell"))
+        {
+            _maxValueInCellSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MaxValueInCell");
+        }
+    }
 
     /// <summary>
     /// AmountTiles slider function
     /// </summary>
     /// <param name="amount"></param>
-    public void SetTileAmount(float amount)            
+    public void SetCellAmount(float amount)            
     {
-        _main.GetComponent<Main>().GetComponent<Main>().TileAmount = Convert.ToInt32(amount);        
-        _main.GetComponent<Main>().PrefabValueTextAmountTiles.GetComponent<Text>().text = Convert.ToString(amount);        
-        PlayerPrefs.SetFloat("TileAmount", amount);
+        _main.CellAmount = Convert.ToInt32(amount);        
+        _main.TextValueTextAmountCells.GetComponent<Text>().text = Convert.ToString(amount);        
+        PlayerPrefs.SetFloat("CellAmount", amount);
         PlayerPrefs.Save();
     }
 
@@ -34,15 +65,15 @@ public class UIBehaviour : MonoBehaviour
     /// MaxValueInTails slider function
     /// </summary>
     /// <param name="value"></param>
-    public void SetMaxValueInTail(float value)             
+    public void SetMaxValueInCell(float value)             
     {
-        _main.GetComponent<Main>().MaxValueInTail = Convert.ToInt32(value);        
-        _main.GetComponent<Main>().PrefabValueTextMaxValueInTail.GetComponent<Text>().text = Convert.ToString(value);
-        PlayerPrefs.SetFloat("MaxValueInTail", value);
+        _main.MaxValueInCell = Convert.ToInt32(value);        
+        _main.TextValueTextMaxValueInCell.GetComponent<Text>().text = Convert.ToString(value);
+        PlayerPrefs.SetFloat("MaxValueInCell", value);
         PlayerPrefs.Save();
     }
 
-    public void ConstantMinValueInTail(Slider slider)
+    public void ConstantMinValueInCell(Slider slider)
     {        
         slider.minValue = 5;
     }
@@ -60,7 +91,7 @@ public class UIBehaviour : MonoBehaviour
             _languageChangeButton.GetComponentInChildren<Text>().text = _language;
             PlayerPrefs.SetString("Language", _language);
             PlayerPrefs.Save();
-            _main.GetComponent<Main>().LocalizationManager();
+            _main.LocalizationManager();
 
             SceneManager.LoadScene("Main");
         }
@@ -70,39 +101,12 @@ public class UIBehaviour : MonoBehaviour
             _languageChangeButton.GetComponentInChildren<Text>().text = _language;
             PlayerPrefs.SetString("Language", _language);
             PlayerPrefs.Save();
-            _main.GetComponent<Main>().LocalizationManager();
+            _main.LocalizationManager();
 
             SceneManager.LoadScene("Main");
         }
         
     }
 
-    private void Awake()
-    {
-        _main = GameObject.FindGameObjectWithTag("main");
-        
-        // load last used language
-        _languageChangeButton = _main.GetComponent<Main>().LanguageChangeButton;
-        if (PlayerPrefs.HasKey("Language"))
-        {
-            _languageChangeButton.GetComponentInChildren<Text>().text = _language = PlayerPrefs.GetString("Language");
-            _main.GetComponent<Main>().LocalizationManager();
-        }
-
-
-        // Load last amountTiles in slider
-        _amountTilesSlider = _main.GetComponent<Main>().AmountTilesSlider;
-        if (PlayerPrefs.HasKey("TileAmount"))
-        {
-            _amountTilesSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("TileAmount");
-        }
-
-        // Load last maxValueInTail in slider
-        _maxValueInTailSlider = _main.GetComponent<Main>().MaxValueInTailSlider;
-        if (PlayerPrefs.HasKey("MaxValueInTail"))
-        {
-            _maxValueInTailSlider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MaxValueInTail");
-        }
-    }
-
+    
 }
